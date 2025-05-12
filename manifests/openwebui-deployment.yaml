@@ -1,0 +1,57 @@
+---
+# openwebui deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openwebui
+  namespace: llm-stack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openwebui
+  template:
+    metadata:
+      labels:
+        app: openwebui
+    spec:
+      containers:
+      - name: openwebui
+        image: ghcr.io/open-webui/open-webui:main
+        ports:
+          - containerPort: 8080
+        env:
+          - name: OLLAMA_BASE_URL
+            value: "http://ollama-service.llm-stack.svc.cluster.local:11434"
+        env:
+          - name: WEBUI_AUTH
+            value: "true"
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: db_url
+        volumeMounts:
+          - name: openwebui-data
+            mountPath: /app/backend/data
+      volumes:
+        - name: openwebui-data
+          persistentVolumeClaim:
+            claimName: openwebui-pvc
+---
+# openwebui service
+apiVersion: v1
+kind: Service
+metadata:
+  name: openwebui
+  namespace: llm-stack
+  labels:
+    app: openwebui
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: openwebui

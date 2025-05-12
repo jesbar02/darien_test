@@ -1,0 +1,44 @@
+---
+# ollama deployment
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ollama
+  namespace: llm-stack
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ollama
+  template:
+    metadata:
+      labels:
+        app: ollama
+    spec:
+      containers:
+      - name: ollama
+        image: ollama/ollama:latest
+        ports:
+          - containerPort: 11434
+        volumeMounts:
+          - name: ollama-data
+            mountPath: /root/.ollama
+      volumes:
+        - name: ollama-data
+          persistentVolumeClaim:
+            claimName: ollama-pvc
+---
+# ollama service if external access is required
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: ollama-service
+#  namespace: llm-stack
+#spec:
+#  selector:
+#    app: ollama
+#  ports:
+#    - protocol: TCP
+#      port: 11434
+#      targetPort: 11434
+#  type: <Ecternal-resource>

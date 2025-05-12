@@ -26,5 +26,5 @@ jobs:
 
       - name: Apply manifests
         run: |
-          kubectl apply -f ../../manifest_files.yaml
-          
+          kubectl apply -f .
+        working-directory: manifests          
