@@ -5,19 +5,7 @@ kind: Namespace
 metadata:
   name: openwebui
 ---
-# Redis (via Bitnami chart recommendation)
-apiVersion: v1
-kind: Service
-metadata:
-  name: redis
-  namespace: openwebui
-spec:
-  ports:
-    - port: 6379
-      targetPort: 6379
-  selector:
-    app: redis
----
+# Redis Deployment and Service
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -39,7 +27,19 @@ spec:
           ports:
             - containerPort: 6379
 ---
-# Ollama Deployment (2 replicas)
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: openwebui
+spec:
+  selector:
+    app: redis
+  ports:
+    - port: 6379
+      targetPort: 6379
+---
+# Ollama Deployment and Service
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -76,11 +76,10 @@ spec:
   selector:
     app: ollama
   ports:
-    - protocol: TCP
-      port: 11434
+    - port: 11434
       targetPort: 11434
 ---
-# OpenWebUI
+# OpenWebUI Deployment and Service
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -116,11 +115,10 @@ spec:
   selector:
     app: openwebui
   ports:
-    - protocol: TCP
-      port: 3000
+    - port: 3000
       targetPort: 3000
 ---
-# Ingress (Traefik + TLS)
+# Ingress for OpenWebUI
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
