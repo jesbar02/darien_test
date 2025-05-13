@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: openwebui-tls
+  namespace: llm-stack
+spec:
+  secretName: openwebui-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: devops-jh.darienc.com
+  dnsNames:
+    - devops-jh.darienc.com
