@@ -22,8 +22,7 @@ spec:
           - containerPort: 8080
         env:
           - name: OLLAMA_BASE_URL
-            value: "http://ollama-service.llm-stack.svc.cluster.local:11434"
-        env:
+            value: "http://ollama.llm-stack.svc.cluster.local:11434"
           - name: WEBUI_AUTH
             value: "true"
           - name: DATABASE_URL
@@ -31,6 +30,7 @@ spec:
               secretKeyRef:
                 name: db-secrets
                 key: db_url
+        tty: true
         volumeMounts:
           - name: openwebui-data
             mountPath: /app/backend/data

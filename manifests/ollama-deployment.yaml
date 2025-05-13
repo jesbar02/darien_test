@@ -28,17 +28,16 @@ spec:
           persistentVolumeClaim:
             claimName: ollama-pvc
 ---
-# ollama service if external access is required
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: ollama-service
-#  namespace: llm-stack
-#spec:
-#  selector:
-#    app: ollama
-#  ports:
-#    - protocol: TCP
-#      port: 11434
-#      targetPort: 11434
-#  type: <Ecternal-resource>
+# ollama service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama
+  namespace: llm-stack
+spec:
+  selector:
+    app: ollama
+  ports:
+  - protocol: TCP
+    port: 11434
+    targetPort: 11434
