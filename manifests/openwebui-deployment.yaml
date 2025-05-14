@@ -30,7 +30,6 @@ spec:
               secretKeyRef:
                 name: db-secrets
                 key: db_url
-        tty: true
         volumeMounts:
           - name: openwebui-data
             mountPath: /app/backend/data
@@ -48,7 +47,7 @@ metadata:
   labels:
     app: openwebui
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: 8080
       targetPort: 8080

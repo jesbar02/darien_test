@@ -1,26 +1,21 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: openwebui-ingress
+  name: open-webui-ingress
   namespace: llm-stack
-  annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
+  #annotations:
+    # Use appropriate annotations for your Ingress controller, e.g., for NGINX:
+    # nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: traefik
   rules:
-    - host: devops-jh.darienc.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: openwebui
-                port:
-                  number: 8080
-  tls:
-    - hosts:
-        - devops-jh.darienc.com
-      secretName: openwebui-tls
+  - host: devops-jh.darienc.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: openwebui
+            port:
+              number: 8080
+             
