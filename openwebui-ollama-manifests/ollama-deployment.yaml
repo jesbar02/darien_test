@@ -18,6 +18,18 @@ spec:
       containers:
       - name: ollama
         image: ollama/ollama:latest
+        lifecycle:
+          postStart:
+            exec:
+              # Pull one or more models here; adjust model names as needed
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  echo "Starting model pull..."
+                  ollama pull llama3.1
+                  ollama pull mistral
+                  echo "Model pull complete."
         ports:
           - containerPort: 11434
         volumeMounts:
