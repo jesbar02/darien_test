@@ -1,0 +1,17 @@
+# netdata ingress
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: netdata-ingress
+  namespace: monitoring
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`devops-monitor-jh.darienc.com`)
+      kind: Rule
+      services:
+        - name: netdata
+          port: 19999
+  tls:
+    certResolver: letsencrypt

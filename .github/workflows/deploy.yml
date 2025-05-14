@@ -18,12 +18,14 @@ jobs:
         uses: azure/setup-kubectl@v3
         with:
           version: 'latest'
+
       - name: Configure kubeconfig for K3s
         run: |
           mkdir -p ~/.kube
           echo "${{ secrets.KUBECONFIG_K3S }}" > ~/.kube/config
           chmod 600 ~/.kube/config
+
       - name: Apply manifests
         run: |
           kubectl apply -f .
-        working-directory: manifests          
+        working-directory: openwebui-ollama-manifests          
